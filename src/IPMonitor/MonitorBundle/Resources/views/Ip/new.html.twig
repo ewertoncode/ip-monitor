@@ -1,0 +1,18 @@
+{% extends 'BaseBaseBundle::Layout/layout.html.twig' %}
+{% block title_top %}IpMonitor{% endblock %}
+{% block body %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Adicionar novo equipamento
+            <div class="pull-right"><a href="{{ url('ipMonitor_list') }}" class="btn btn-xs btn-default"><i class="fa fa-arrow-left"></i> Voltar</a></div>
+        </div>
+        <div class="panel-body">
+            {{ form_errors(form) }}
+
+            <form method="post" class="form-horizontal">
+                {{ form_widget(form) }}
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Salvar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

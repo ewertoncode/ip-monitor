@@ -1,0 +1,45 @@
+{% extends 'BaseBaseBundle::Layout/layout.html.twig' %}
+{% block title_top %}IP Monitor{% endblock %}
+
+{% block body %}
+    <a href="{{ path('ipMonitor_list') }}" class="btn btn-primary">Cadastrar equipamentos</a>
+    <div class="alert alert-info">
+        <strong>Aguarde</strong> {{ ips * 4 }} segundos entre cada verificação.
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <th>Equipamento</th>
+            <th>Ip</th>
+            <th>Média</th>
+            <th>Perda</th>
+            <th>Stuação</th>
+        </thead>
+        <tbody id="resultado">
+
+
+        </tbody>
+    </table>
+    <div id="time"></div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        function testa() {
+            $.ajax({
+                url: '/admin/ip-monitor/result',
+                method: 'GET',
+                success: function(data) {
+                    $('#resultado').empty();
+                    $('#time').empty();
+                    $('#resultado').append(data.response);
+                    $('#time').append('<div class="alert alert-success">Foram transmitidos 3 pacotes em cada teste. <br>Gastou '+data.time+'s para ser executado todos os testes. <br>É considerado normal a diferença de até 40ms em relação a referência.</div>');
+                }
+            });
+        };
+        var tempo = {{ ips }} * 4000;
+        setInterval(testa, tempo);
+
+    </script>
+{% endblock %}

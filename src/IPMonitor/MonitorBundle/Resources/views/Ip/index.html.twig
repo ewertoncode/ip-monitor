@@ -1,0 +1,49 @@
+{% extends 'BaseBaseBundle::Layout/layout.html.twig' %}
+{% block title_top %}IpMonitor {% endblock %}
+{% block body %}
+
+    <div class="panel panel-default">
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <br/>
+            <p class="alert alert-success">{{ flashMessage }}</p>
+        {% endfor %}
+
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <br/>
+            <p class="alert alert-danger">{{ flashMessage }}</p>
+        {% endfor %}
+        <div class="panel-heading">
+            Lista de equipamentos <span class="badge">{{ ips | length }}</span>
+            <div class="pull-right"><a href="{{ url('ipMonitor_new') }}" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> Novo item</a></div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <thead>
+                    <th>Nome</th>
+                    <th>Ip</th>
+                    <th></th>
+                </thead>
+                {% if ips| length > 0 %}
+                    <tbody>
+                    {% for entity in ips %}
+                        <tr>
+                            <td>{{ entity.nome }}</td>
+                            <td>{{ entity.ip }} {% if entity.referencia %}<span class="label label-success">Referência</span> {% endif %}</td>
+                            <td>
+                                <a href="{{ url('ipMonitor_edit', {'id' : entity.id}) }}" class="btn btn-xs btn-primary"><i class="fa fa-pencil-square-o"></i> Editar</a>
+                                <a href="{{ url('ipMonitor_delete', {'id' : entity.id}) }}" class="btn btn-xs btn-danger confirm"><i class="fa fa-times"></i> Deletar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    {% else %}
+                    <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle"></i> Nenhum registro encontrado
+                    </div>
+
+                {% endif %}
+
+            </table>
+        </div>
+    </div>
+{% endblock %}
